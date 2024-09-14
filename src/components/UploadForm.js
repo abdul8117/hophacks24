@@ -10,12 +10,39 @@ const UploadForm = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (selectedFile) {
-      console.log('File selected:', selectedFile);
-      // logic
-    }
-  };
+  e.preventDefault();
+
+  if (selectedFile) {
+    console.log('File selected:', selectedFile);
+
+    // Create a FormData object to hold the file and other data
+    const formData = new FormData();
+    formData.append('photo', selectedFile); // Append the file
+
+    // Make the API call to your backend
+    fetch('/add-meal', {
+      method: 'POST',
+      body: formData, // Send the formData object containing the photo
+      headers: {
+        'Accept': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        // Handle success, like showing a success message
+        if (data.status === 'success') {
+          alert('Meal added successfully!');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  } else {
+    alert('Please select a file.');
+  }
+};
+
 
   return (
     <div className="w-full md:w-3/4 lg:w-2/3 p-6 mx-auto rounded-md">
