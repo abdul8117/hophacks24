@@ -13,7 +13,9 @@ const UploadForm = () => {
     e.preventDefault();
     if (selectedFile) {
       console.log('File selected:', selectedFile);
-      // logic
+      
+      
+
     }
   };
 
