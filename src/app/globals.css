@@ -2,26 +2,157 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Blurry Ball Styles */
+.blurry-ball {
+  position: absolute;
+  width: 200px; /* Larger size for more visibility */
+  height: 200px;
+  filter: blur(60px); /* Same blur */
+  border-radius: 50%;
+  animation: float 4s infinite ease-in-out; /* Faster movement */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.blurry-ball.delay-1 {
+  top: 30%;
+  left: 60%;
+  animation-delay: 1s;
+}
+
+.blurry-ball.delay-2 {
+  top: 80%;
+  left: 20%;
+  animation-delay: 1.5s;
+}
+
+.blurry-ball.delay-3 { /* New ball */
+  top: 50%;
+  left: 40%;
+  animation-delay: 2s;
+}
+
+/* Float animation with faster and more apparent movement */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  25% {
+    transform: translateY(-60px) translateX(40px); /* Larger movement */
+  }
+  50% {
+    transform: translateY(60px) translateX(-40px);
+  }
+  75% {
+    transform: translateY(-40px) translateX(30px);
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* General styling for the page */
+.my-journal-container {
+  padding: 2rem;
+  text-align: center;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.journal-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
 }
+
+/* Grid styling to look like a calendar */
+.journal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+  justify-items: center;
+}
+
+.journal-grid-cell {
+  background-color: #f3f3f3;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.journal-grid-cell:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.journal-grid-cell p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+/* Container styling for the day page */
+.day-page-container {
+  padding: 2rem;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+/* Styling for the editor */
+.editor-container {
+  margin-top: 2rem;
+}
+
+h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+/* Arrows for navigating between days */
+.navigation-arrows {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.arrow {
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: #000;
+  padding: 0.5rem 1rem;
+  background-color: #f3f3f3;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.arrow:hover {
+  background-color: #e2e2e2;
+}
+
+.left-arrow {
+  margin-right: auto;
+}
+
+.right-arrow {
+  margin-left: auto;
+}
+
+nav a {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+
+
+
+
+
+
