@@ -9,7 +9,7 @@
   height: 200px;
   filter: blur(60px); /* Same blur */
   border-radius: 50%;
-  animation: float 5s infinite ease-in-out; /* Faster movement */
+  animation: float 4s infinite ease-in-out; /* Faster movement */
 }
 
 .blurry-ball.delay-1 {
@@ -45,3 +45,5 @@
     transform: translateY(-40px) translateX(30px);
   }
 }
+
+

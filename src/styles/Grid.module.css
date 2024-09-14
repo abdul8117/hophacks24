@@ -1,0 +1,18 @@
+/* styles/Grid.module.css */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  
+  .grid-cell {
+    border: 1px solid #ccc;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .grid-cell:hover {
+    background-color: #f0f0f0;
+  }  

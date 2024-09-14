@@ -12,7 +12,7 @@ const Navbar = () => {
         
         {/* Navigation Links */}
         <div className="hidden md:flex flex-1 justify-center space-x-8">
-          <Link href="/" className="text-black hover:text-gray-400 transition duration-300">Home</Link>
+          <Link href="/my-journal" className="text-black hover:text-gray-400 transition duration-300">My Journal</Link>
           <Link href="/about" className="text-black hover:text-gray-400 transition duration-300">About</Link>
           <Link href="/services" className="text-black hover:text-gray-400 transition duration-300">Services</Link>
           <Link href="/contact" className="text-black hover:text-gray-400 transition duration-300">Contact</Link>
