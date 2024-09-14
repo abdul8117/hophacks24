@@ -2,26 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Blurry Ball Styles */
+.blurry-ball {
+  position: absolute;
+  width: 200px; /* Larger size for more visibility */
+  height: 200px;
+  filter: blur(60px); /* Same blur */
+  border-radius: 50%;
+  animation: float 5s infinite ease-in-out; /* Faster movement */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.blurry-ball.delay-1 {
+  top: 30%;
+  left: 60%;
+  animation-delay: 1s;
+}
+
+.blurry-ball.delay-2 {
+  top: 80%;
+  left: 20%;
+  animation-delay: 1.5s;
+}
+
+.blurry-ball.delay-3 { /* New ball */
+  top: 50%;
+  left: 40%;
+  animation-delay: 2s;
+}
+
+/* Float animation with faster and more apparent movement */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
   }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  25% {
+    transform: translateY(-60px) translateX(40px); /* Larger movement */
+  }
+  50% {
+    transform: translateY(60px) translateX(-40px);
+  }
+  75% {
+    transform: translateY(-40px) translateX(30px);
   }
 }
