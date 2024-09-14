@@ -22,6 +22,7 @@ const UploadForm = () => {
     // Make the API call to your backend
     fetch('/add-meal', {
       method: 'POST',
+      credentials: 'include',
       body: formData, // Send the formData object containing the photo
       headers: {
         'Accept': 'application/json',
