@@ -1,7 +1,22 @@
-// components/UploadForm.js
-import React from 'react';
+"use client"; 
 
-export default function UploadForm() {
+import React, { useState } from 'react';
+
+const UploadForm = () => {
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (selectedFile) {
+      console.log('File selected:', selectedFile);
+      // logic
+    }
+  };
+
   return (
     <div className="upload-form p-4 rounded-lg w-full">
       <h2 className="text-lg font-bold mb-4">Upload a Meal Picture</h2>
