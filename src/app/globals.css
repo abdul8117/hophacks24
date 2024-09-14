@@ -140,3 +140,19 @@ h2 {
   margin-left: auto;
 }
 
+nav a {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+
+
+
+
+
+

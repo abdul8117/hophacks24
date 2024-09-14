@@ -9,7 +9,7 @@ export default function MealTable({ meals }) {
 
   return (
     <div className="meal-table w-full mb-6">
-      <h2 className="text-lg font-bold mb-4">Meals of the Day</h2>
+      <h2 className="text-2xl font-bold mb-4">Meals of the Day</h2>
       {meals.length > 0 ? (
         <table className="w-full text-left">
           <thead>
