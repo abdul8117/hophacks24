@@ -33,7 +33,42 @@ def get_user_by_username(username):
     return user
 
 def add_meal(user_id, date, photo_path, foods):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    sql = """INSERT INTO Meal (userId, mealDate, photoPath)
+        VALUES (?, ?, ?)"""
+
+    cursor.execute(sql, (user_id, date, photo_path))
+    meal_id = cursor.lastrowid
+
+    for food in foods:
+        food_name = food['foodName']
+        quantity = food['quantity']
+        calories = food['calories']
+        protein = food['protein']
+        carbohydrates = food['carbohydrates']
+        fat = food['fat']
+        vitamins = food['vitamins']
+        minerals = food['minerals']
+
+        sql = """
+            INSERT INTO Food (name, servingSize, calories, protein, carbohydrates, fat)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """
+
+        cursor.execute(sql, (food_name, quantity, calories, protein, carbohydrates, fat))
+        food_id = cursor.lastrowid
+
+        conn.commit()
     
+    # insert into MealFood table
+    sql = """INSERT INTO MealFood (mealId, foodId, quantity) VALUES (?, ?, ?)"""
+    for food in foods:
+        cursor.execute(sql, (meal_id, food_id, quantity))
+        conn.commit()
+
+    conn.close()
 
 # Function to query meals and foods from the database
 def get_meals_for_user(user_id):

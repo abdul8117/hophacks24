@@ -62,8 +62,8 @@ def logout():
     return jsonify({'message': 'Logout successful', 'status': 'success'})
 
 # Route to check if the user is logged in
-@app.route('/profile', methods=['GET'])
-def profile():
+@app.route('/validate_session', methods=['GET'])
+def validate_session():
     if 'username' in session:
         return jsonify({'username': session['username'], 'status': 'success'})
     else:
@@ -122,7 +122,6 @@ def add_meal():
 
         # Get the current UNIX timestamp
         date = int(time.time())
-
 
         # Make a request to Gemini
         # Get the food items in the meal
@@ -188,7 +187,6 @@ def get_journal_entry(journal_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
 
 
 """
