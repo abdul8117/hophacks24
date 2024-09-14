@@ -16,8 +16,6 @@ CREATE TABLE "Meal" (
     "userId" INTEGER NOT NULL,
     "mealDate" DATETIME NOT NULL,
     "photoPath" TEXT NOT NULL,
-    "totalCalories" REAL NOT NULL,
-    "createdAt" INTEGER NOT NULL,
 
     FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -65,6 +63,16 @@ CREATE TABLE "NutritionLog" (
 
     FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY ("mealId") REFERENCES "Meal"("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE "Journal" (
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "userId" INTEGER NOT NULL,
+    "title" TEXT NOT NULL,
+    "content" BLOB NOT NULL,
+    "createdAt" INTEGER NOT NULL,
+
+    FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateIndex
