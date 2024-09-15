@@ -9,6 +9,7 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 
+
 export default function Home() {
   const [meals, setMeals] = useState([
     // Example meals, replace with dynamic data later
@@ -58,7 +59,6 @@ export default function Home() {
       <div className="max-w-md w-full p-8 bg-white shadow-lg rounded-lg border border-gray-200">
         <h1 className="text-4xl font-bold text-center text-gray-800 mb-6">NutriWise</h1>
         <p className="text-center text-gray-600 mb-6">Please log in or sign up to continue.</p>
-
         <div className="flex flex-col items-center">
           {user ? (
             <div className="text-center">
@@ -82,7 +82,6 @@ export default function Home() {
       </div>
     </div>
   );
-
   };
 
 }
