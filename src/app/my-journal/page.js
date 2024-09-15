@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar';
 import '../globals.css';
 import Layout from '@/components/Layout';
 
-const daysInMonth = 30; // or calculate dynamically
+const daysInMonth = 30; 
 
 export default function MyJournal() {
   return (

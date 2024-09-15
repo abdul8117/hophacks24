@@ -1,29 +1,43 @@
-import Navbar from "@/components/Navbar";
-import Layout from "@/components/Layout";
+"use client";
 
-export default function KeyTakeaways({ onClick }) {
-    return (
-      <Layout>
-          <Navbar />
-        <div className="mt-8 p-4">
-          <h2 className="text-xl font-semibold mb-2">Key Takeaways</h2>
-          <p>
-            - You could improve your protein intake by adding more lean meats.
-          </p>
-          <p>
-            - Consider lowering your daily carbohydrate intake.
-          </p>
-          <p>
-            - Increase healthy fat consumption, such as avocados or nuts.
-          </p>
-          <p
-            className="text-blue-500 cursor-pointer underline mt-4"
-            onClick={onClick}
-          >
-            Click here for detailed advice
-          </p>
-        </div>
-      </Layout>
-    );
-  }
+import Layout from '@/components/Layout';
+import { useEffect, useState } from 'react';
+
+export default function Takeaways() {
+  const [text, setText] = useState('');
+  const [isTyping, setIsTyping] = useState(true);
+  const fullText = "Gemini suggests: Increase protein intake for better muscle recovery. Consider adding more healthy fats for balanced nutrition.";
+
+  useEffect(() => {
+    let index = 0;
+    let newText = ''; // Initialize newText as an empty string
   
+    const interval = setInterval(() => {
+      // Ensure the index doesn't exceed the fullText length
+      if (index < fullText.length) {
+        newText += fullText[index]; // Append the current character to newText
+        setText(newText); // Update the state with the newText
+        index++;
+      } else {
+        clearInterval(interval); // Stop the interval when text is fully typed
+        setIsTyping(false); // Stop the cursor when typing is done
+      }
+    }, 20); // Speed of the typing effect
+  
+    return () => clearInterval(interval);
+  }, [fullText]);
+
+  return (
+    <Layout>
+    <div className="takeaways-section text-center">
+        <h2 className="journal-title mt-10"> AI Powered Goals for you</h2>
+        <p className="takeaways-text">
+          {text}
+          {/* Show cursor while typing */}
+          {isTyping && <span className="cursor">|</span>}
+        </p>
+      </div>
+    </Layout>
+  );
+}
+
