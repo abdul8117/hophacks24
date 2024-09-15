@@ -18,7 +18,7 @@ export default function Home() {
       <div className="flex flex-col md:flex-row min-h-screen justify-between">
         {/* Left side with chart */}
         <div className="w-full md:w-1/2 p-6">
-          <h2 className="text-2xl font-bold mb-2 mt-6 flex justify-center">Hey! Lets see how you are doing so far...</h2>
+          <h2 className="text-2xl font-bold mb-2 mt-6 flex justify-center">Hey! Lets see how you're doing so far...</h2>
           <NutrientChart />
         </div>
 
@@ -33,7 +33,7 @@ export default function Home() {
           {/* Key Takeaways */}
           <div className="key-takeaways mt-6 p-6 rounded-lg w-full">
             <h2 className="text-2xl font-bold mb-2">Key Takeaways</h2>
-            <p>Gemini suggests: Increase protein intake for better muscle recovery. DO IT BRO. </p>
+            <p>Increase protein intake for better muscle recovery. </p>
             <p>Consider adding more healthy fats for balanced nutrition.</p>
             <button 
               className="mt-4 text-blue-500 hover:underline"

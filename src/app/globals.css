@@ -46,7 +46,7 @@
   }
 }
 
-/* General styling for the page */
+/*General styling for the page*/
 .my-journal-container {
   padding: 2rem;
   text-align: center;
@@ -149,6 +149,62 @@ nav a {
   font-weight: 600;
   transition: color 0.3s ease;
 }
+
+/* Typing text styling
+.takeaways-text {
+  font-family: 'Courier New', Courier, monospace;  
+  white-space: pre-wrap;  
+}
+
+ 
+.cursor {
+  display: inline-block;
+  width: 1px;
+  background-color: black;
+  margin-left: 2px;
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+} */
+
+/* Typing text styling */
+.takeaways-text {
+  font-family: 'Courier New', Courier, monospace; /* Optional, for a typewriter feel */
+  white-space: pre-wrap; /* Ensures text wraps naturally */
+}
+
+/* Blinking cursor effect */
+.cursor {
+  display: inline-block;
+  width: 1px;
+  background-color: black;
+  margin-left: 2px;
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
 
 
 
