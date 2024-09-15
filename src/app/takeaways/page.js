@@ -2,7 +2,6 @@
 
 import Layout from '@/components/Layout';
 import { useEffect, useState } from 'react';
-import Navbar from '@/components/Navbar';
 
 export default function Takeaways() {
   const [text, setText] = useState('');
@@ -30,7 +29,6 @@ export default function Takeaways() {
 
   return (
     <Layout>
-      <Navbar/>
     <div className="takeaways-section text-center">
         <h2 className="journal-title mt-10"> AI Powered Goals for you</h2>
         <p className="takeaways-text">

@@ -26,12 +26,13 @@ export default function Home() {
           <NutrientChart />
         </div>
 
-      {/* {authenticatd ? (
-        <HomePage />
-      ) : (
-        //<Auth /> // TODO
-        null
-      )} */}
+        {/* Right side with form */}
+        <div className="w-full md:w-1/2 p-6 flex flex-col items-center mt-5 gap-5 justify-start">
+          {/* Meals Table */}
+          <MealTable meals={meals} />
+
+          {/* Upload Form */}
+          <UploadForm />
 
           {/* Key Takeaways */}
           <div className="key-takeaways mt-6 p-6 rounded-lg w-full">
@@ -45,6 +46,7 @@ export default function Home() {
             </button>
           </div>
         </div>
+      </div>
     </Layout>
   );
 }
