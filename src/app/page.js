@@ -24,8 +24,6 @@ export default function Home() {
           <NutrientChart />
         </div>
 
-  return (
-    <Layout>
       {/* {authenticatd ? (
         <HomePage />
       ) : (
@@ -45,7 +43,6 @@ export default function Home() {
             </button>
           </div>
         </div>
-      </div>
     </Layout>
   );
 }
