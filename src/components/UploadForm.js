@@ -1,6 +1,7 @@
-"use client"; 
+"use client";
 
 import React, { useState } from 'react';
+import API_URL from '@/utils/utils';
 
 const UploadForm = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -9,66 +10,47 @@ const UploadForm = () => {
     setSelectedFile(e.target.files[0]);
   };
 
-  const handleSubmit = (e) => {
-  e.preventDefault();
+  const handleUpload = async (e) => {
+    e.preventDefault();
 
-  if (selectedFile) {
-    console.log('File selected:', selectedFile);
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
 
-    // Create a FormData object to hold the file and other data
-    const formData = new FormData();
-    formData.append('photo', selectedFile); // Append the file
+      try {
+        const response = await fetch(`${API_URL}/add-meal`, {
+          method: 'POST',
+          body: formData,
+          credentials: 'include',
+        });
 
-    // Make the API call to your backend
-    fetch('/add-meal', {
-      method: 'POST',
-      credentials: 'include',
-      body: formData, // Send the formData object containing the photo
-      headers: {
-        'Accept': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        // Handle success, like showing a success message
-        if (data.status === 'success') {
-          alert('Meal added successfully!');
+        if (response.ok) {
+          const result = await response.json();
+          console.log('File uploaded successfully:', result);
+        } else {
+          console.error('Failed to upload file.');
         }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  } else {
-    alert('Please select a file.');
-  }
-};
-
+      } catch (error) {
+        console.error('Error occurred while uploading:', error);
+      }
+    }
+  };
 
   return (
-    <div className="w-full md:w-3/4 lg:w-2/3 p-6 mx-auto rounded-md">
-      <h2 className="text-center text-2xl font-bold mb-4">Upload Your Picture</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-4">
-        <input
-          type="file"
-          name = "food-photo"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="p-2 border rounded bg-gray-50"
-        />
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600"
-        >
-          Upload
-        </button>
-        {selectedFile && (
-          <div className="mt-4 text-center">
-            <p className="font-semibold">Selected File:</p>
-            <p>{selectedFile.name}</p>
-          </div>
-        )}
-      </form>
+    <div className="upload-form p-4 rounded-lg w-full">
+      <h2 className="text-2xl font-bold mb-4">Upload a Meal Picture</h2>
+      <input 
+        type="file" 
+        accept="image/*" 
+        className="mb-4" 
+        onChange={handleFileChange} 
+      />
+      <button 
+        className="bg-blue-500 text-white py-2 px-4 rounded" 
+        onClick={handleUpload}
+      >
+        Upload
+      </button>
     </div>
   );
 };
