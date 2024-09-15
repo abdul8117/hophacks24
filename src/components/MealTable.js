@@ -1,11 +1,12 @@
 // components/MealTable.js
 import React from 'react';
 
-export default function MealTable({ meals }) {
-  const totalCalories = meals.reduce((total, meal) => total + meal.calories, 0);
-  const totalProteins = meals.reduce((total, meal) => total + meal.proteins, 0);
-  const totalFats = meals.reduce((total, meal) => total + meal.fats, 0);
-  const totalCarbs = meals.reduce((total, meal) => total + meal.carbs, 0);
+export default function MealTable({ meals = [] }) {
+  // Ensure that meals is an array, and handle cases where it's empty
+  const totalCalories = meals.length > 0 ? meals.reduce((total, meal) => total + meal.calories, 0) : 0;
+  const totalProteins = meals.length > 0 ? meals.reduce((total, meal) => total + meal.proteins, 0) : 0;
+  const totalFats = meals.length > 0 ? meals.reduce((total, meal) => total + meal.fats, 0) : 0;
+  const totalCarbs = meals.length > 0 ? meals.reduce((total, meal) => total + meal.carbs, 0) : 0;
 
   return (
     <div className="meal-table w-full mb-6">
