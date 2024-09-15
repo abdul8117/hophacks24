@@ -1,7 +1,10 @@
 "use client"; // Ensure client-side rendering
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
+
+import getMealsData from '@/utils/GetMealData';
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -16,17 +19,72 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const NutrientChart = () => {
   const [selectedNutrient, setSelectedNutrient] = useState('calories');
+  const [mealData, setMealData] = useState([]);
+  const [nutrientData, setNutrientData] = useState({
+    calories: [],
+    proteins: [],
+    carbs: [],
+    fats: []
+  });
 
-  // Nutrient data
-  const nutrientData = {
-    calories: [2000, 1800, 2200, 2500, 2100, 2300, 1900],
-    proteins: [90, 100, 80, 110, 95, 105, 85],
-    carbs: [300, 280, 320, 330, 310, 350, 290],
-    fats: [70, 65, 80, 75, 85, 90, 60],
+  useEffect(() => {
+    // Fetch meal data from the backend
+    getMealsData().then((data) => {
+      setMealData(data);
+
+      // Process the fetched data to calculate nutrients per day
+      const processedData = processMealData(data);
+      setNutrientData(processedData);
+    });
+  }, []);
+
+  // Function to process the meal data
+  const processMealData = (meals) => {
+    // Create an object to accumulate the total nutrients per day
+    const nutrientsPerDay = {
+      calories: [],
+      proteins: [],
+      carbs: [],
+      fats: []
+    };
+
+    const groupedByDate = {};
+
+    // Group meals by date
+    meals.forEach(meal => {
+      const mealDate = new Date(meal.mealDate).toDateString();
+
+      if (!groupedByDate[mealDate]) {
+        groupedByDate[mealDate] = {
+          calories: 0,
+          proteins: 0,
+          carbs: 0,
+          fats: 0
+        };
+      }
+
+      // Sum up nutrients for each food in the meal
+      meal.foods.forEach(food => {
+        groupedByDate[mealDate].calories += food.calories * food.quantity;
+        groupedByDate[mealDate].proteins += food.protein * food.quantity;
+        groupedByDate[mealDate].carbs += food.carbohydrates * food.quantity;
+        groupedByDate[mealDate].fats += food.fat * food.quantity;
+      });
+    });
+
+    // Populate nutrientsPerDay with the aggregated data
+    for (const date in groupedByDate) {
+      nutrientsPerDay.calories.push(groupedByDate[date].calories);
+      nutrientsPerDay.proteins.push(groupedByDate[date].proteins);
+      nutrientsPerDay.carbs.push(groupedByDate[date].carbs);
+      nutrientsPerDay.fats.push(groupedByDate[date].fats);
+    }
+
+    return nutrientsPerDay;
   };
 
   const data = {
-    labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+    labels: Object.keys(nutrientData[selectedNutrient]), // You can replace this with dynamic labels (e.g., Day 1, Day 2, etc.)
     datasets: [
       {
         label: selectedNutrient.charAt(0).toUpperCase() + selectedNutrient.slice(1),
