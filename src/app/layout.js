@@ -5,7 +5,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Navbar />
         <div className="pt-16"> {/* Ensure content is not hidden behind the navbar */}
           <div className="pulse one"></div>
           <div className="pulse two"></div>
