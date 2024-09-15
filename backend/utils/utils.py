@@ -3,7 +3,7 @@ import PIL.Image
 import google.generativeai as genai
 from fatsecret import Fatsecret
 
-import os
+import sqlite3, os
 
 # Credits to Aarav, Josephine
 def get_food_items(image_path):
@@ -35,3 +35,4 @@ def get_food_nutrition(food_name):
     nutrition = fs.foods_search(food_name)
 
     return nutrition
+

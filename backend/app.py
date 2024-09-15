@@ -5,7 +5,7 @@ from fatsecret import Fatsecret
 from db.db import *
 from backend.utils.utils import *
 
-import datetime, time, os
+import datetime, time, os, sqlite3
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
@@ -16,44 +16,44 @@ def index():
 
 # Sign up route
 @app.route('/sign-up', methods=['POST'])
-def sign_up():
-    data = request.get_json()
+# def sign_up():
+#     data = request.get_json()
 
-    username = data.get('username')
-    name = data.get('name')
-    password = data.get('password')
-    height = data.get('height')
-    weight = data.get('weight')
-    age = data.get('age')
-    gender = data.get('gender')
+#     username = data.get('username')
+#     name = data.get('name')
+#     password = data.get('password')
+#     height = data.get('height')
+#     weight = data.get('weight')
+#     age = data.get('age')
+#     gender = data.get('gender')
 
-    # Hash the password
-    password_hash = generate_password_hash(password)
+#     # Hash the password
+#     password_hash = generate_password_hash(password)
 
-    # Insert user into the database
-    create_user(username, name, password_hash, height, weight, age, gender)
+#     # Insert user into the database
+#     create_user(username, name, password_hash, height, weight, age, gender)
 
-    session['username'] = username
+#     session['username'] = username
 
-    return jsonify({'message': 'User created successfully'})
+#     return jsonify({'message': 'User created successfully'})
 
-# Login route
-@app.route('/login', methods=['POST'])
-def login():
-    data = request.get_json()
+# # Login route
+# @app.route('/login', methods=['POST'])
+# def login():
+#     data = request.get_json()
 
-    username = data.get('username')
-    password = data.get('password')
+#     username = data.get('username')
+#     password = data.get('password')
 
-    user = get_user_by_username(username)
+#     user = get_user_by_email(username)
 
-    print(user)
+#     print(user)
 
-    if user and check_password_hash(user[3], password):
-        session['username'] = username
-        return jsonify({'message': 'Login successful', 'status': 'success'})
-    else:
-        return jsonify({'message': 'Invalid username or password', 'status': 'error'}), 401
+#     if user and check_password_hash(user[3], password):
+#         session['username'] = username
+#         return jsonify({'message': 'Login successful', 'status': 'success'})
+#     else:
+#         return jsonify({'message': 'Invalid username or password', 'status': 'error'}), 401
 
 # Logout route
 @app.route('/logout', methods=['POST'])
@@ -61,13 +61,74 @@ def logout():
     session.pop('username', None)
     return jsonify({'message': 'Logout successful', 'status': 'success'})
 
+
+@app.route('/create-user', methods=['POST'])
+def create_user():
+    data = request.json    
+    user_id = data.get('userId')
+    
+    # Check if user is valid
+    if not does_user_exist(user_id):
+        return jsonify({"message": "User does not exist"}), 401
+
+    # If user is valid, proceed with the rest of the data
+    email = data.get('email')
+    name = data.get('name')
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Insert new user into the database
+    cursor.execute('''
+        INSERT INTO "User" (email, name, createdAt)
+        VALUES (?, ?, ?)
+    ''', (email, name, int(time.time())))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "User created successfully!"}), 201
+
+
+@app.route('/update-user-profile', methods=['POST'])
+def update_user_profile():
+    height = request.get('height')
+    weight = request.get('weight')
+    age = request.get('age')
+    gender = request.get('gender')
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    sql = """
+        UPDATE "User" SET height = ?, weight = ?, age = ? WHERE email = ?
+    """
+
+    cursor.execute(sql, (height, weight, age))
+    
+    conn.commit()
+
+    return jsonify({'message': 'User profile updated successfully'}), 200
+
+
+
 # Route to check if the user is logged in
-@app.route('/validate_session', methods=['GET'])
-def validate_session():
-    if 'username' in session:
-        return jsonify({'username': session['username'], 'status': 'success'})
-    else:
-        return jsonify({'message': 'Not logged in', 'status': 'error'}), 401
+# @app.route('/validate_session', methods=['GET'])
+# def validate_session():
+#     user_identifier = request.get('user_identifier')
+
+#     if user_identifier not in session:
+#         session['identifier'] = user_identifier
+
+
+    
+
+    return jsonify({'message': 'Session validated', 'status': 'success'}), 200
+
+    # if 'username' in session:
+    #     return jsonify({'username': session['username'], 'status': 'success'})
+    # else:
+    #     return jsonify({'message': 'Not logged in', 'status': 'error'}), 401
 
 
 """
@@ -113,15 +174,15 @@ In the MealFood table, we will store:
 def add_meal():
     if request.files:
         photo = request.files['photo']
-        path = f'uploads/{session["username"]}/{photo.filename}_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.jpg'
+        path = f'uploads/{session["username"]}/{photo.filename}_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}'
         photo.save(path)
 
         # Get the user's ID
-        user = get_user_by_username(session['username'])
+        user = get_user_by_email(session['username'])
         user_id = user[0]
 
         # Get the current UNIX timestamp
-        date = int(time.time())
+        epoch = int(time.time())
 
         # Make a request to Gemini
         # Get the food items in the meal
@@ -136,17 +197,15 @@ def add_meal():
             food['protein'] = nutrition['protein']
             food['carbohydrates'] = nutrition['carbohydrates']
             food['fat'] = nutrition['fat']
-            food['vitamins'] = nutrition['vitamins']
-            food['minerals'] = nutrition['minerals']
 
         # Insert the meal into the database
-        add_meal(user_id, date, path)
+        add_meal(user_id, epoch, path)
 
         return jsonify({'message': 'Meal added successfully', 'status': 'success'})
 
 @app.route('/get-meals', methods=['GET'])
 def get_meals():
-    user = get_user_by_username(session['username'])
+    user = get_user_by_email(session['email'])
     user_id = user[0]
 
     meals = get_meals_for_user(user_id)
@@ -157,7 +216,7 @@ def get_meals():
 def save_journal_entry():
     data = request.get_json()
 
-    user = get_user_by_username(session['username'])
+    user = get_user_by_email(session['email'])
     user_id = user[0]
 
     date = data.get('date')
@@ -169,7 +228,7 @@ def save_journal_entry():
 
 @app.route('/get-journal-entries', methods=['GET'])
 def get_journal_entries():
-    user = get_user_by_username(session['username'])
+    user = get_user_by_email(session['email'])
     user_id = user[0]
 
     entries = get_journal_entries_for_user(user_id)
@@ -178,7 +237,7 @@ def get_journal_entries():
 
 @app.route('/get-journal-entry/<int:journal_id>', methods=['GET'])
 def get_journal_entry(journal_id):
-    user = get_user_by_username(session['username'])
+    user = get_user_by_email(session['email'])
     user_id = user[0]
 
     entry = get_journal_entry_by_id(user_id, journal_id)
